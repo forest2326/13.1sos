@@ -1,6 +1,5 @@
 import csv
 import os.path
-from config import ROOT_PATH
 
 
 class Item:
@@ -70,7 +69,7 @@ class Item:
         file_path = os.path.join(ROOT_PATH, file_path)
 
         items = []
-        with open(file_path, newline='', encoding="windows-1251") as csvfile:
+        with open(file_path, newline='', encoding="utf-8") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 name, price, quantity = row['name'], float(row['price']), int(row['quantity'])
