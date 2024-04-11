@@ -1,5 +1,6 @@
 import csv
 import os.path
+from config import ROOT_PATH
 
 
 class Item:
@@ -11,15 +12,16 @@ class Item:
 
     def __init__(self, name: str, price: float, quantity: int) -> None:
         """
-        Создание экземпляра класса item.
-
-        :param name: Название товара.
+        Класс для представления товара в магазине.
+        (self, name: str, price: float, quantity: int) -> None:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине.
         """
+
         self.__name = name
         self.price = price
         self.quantity = quantity
+        Item.all.append(self)
 
     def __repr__(self):
         return f"{__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
@@ -32,36 +34,6 @@ class Item:
             return self.quantity + other.quantity
         raise ValueError('Складывать можно только объекты Item и дочерние от них.')
 
-    def calculate_total_price(self) -> float:
-        """
-        Рассчитывает общую стоимость конкретного товара в магазине.
-
-        :return: Общая стоимость товара.
-        """
-        total_price = self.price * self.quantity
-        return total_price
-
-    def apply_discount(self) -> None:
-        """
-        Применяет установленную скидку для конкретного товара.
-        """
-        self.price *= self.pay_rate
-
-    def calculate_total_price(self) -> float:
-        """
-        Рассчитывает общую стоимость конкретного товара в магазине.
-        :return: Общая стоимость товара.
-        """
-        pass
-        total_price = self.price * self.quantity
-        return total_price
-
-    def apply_discount(self) -> None:
-        """
-        Применяет установленную скидку для конкретного товара.
-        """
-        self.price *= self.pay_rate
-
     @classmethod
     def instantiate_from_csv(cls, file_path: str) -> None:
         """Инициализирует экземпляры класса Item данными из файла src/items.csv"""
@@ -69,7 +41,7 @@ class Item:
         file_path = os.path.join(ROOT_PATH, file_path)
 
         items = []
-        with open(file_path, newline='', encoding="utf-8") as csvfile:
+        with open(file_path, newline='', encoding="windows-1251") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 name, price, quantity = row['name'], float(row['price']), int(row['quantity'])
@@ -87,3 +59,19 @@ class Item:
     @name.setter
     def name(self, value) -> None:
         self.__name = value[:10]
+
+    def calculate_total_price(self) -> float:
+        """
+        Рассчитывает общую стоимость конкретного товара в магазине.
+        :return: Общая стоимость товара.
+        """
+        pass
+        total_price = self.price * self.quantity
+        return total_price
+
+    def apply_discount(self) -> None:
+        """
+        Применяет установленную скидку для конкретного товара.
+        """
+        pass
+        self.price *= self.pay_rate
